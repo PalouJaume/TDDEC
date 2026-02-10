@@ -28,19 +28,22 @@ extern "C"
 //START: testGroup
 TEST_GROUP(sprintf)
 {
-    char output[100];
+    char *output;
     const char * expected;
     void setup()
     {
-        memset(output, 0xaa, sizeof output);
+        //memset(output, 0xaa, sizeof output);
         expected = "";
     }
     void teardown()
     {
+        free(output);
     }
     void expect(const char * s)
     {
         expected = s;
+        output = (char *)malloc((strlen(s) + 5) * sizeof(char));
+        memset(output, 0xaa, (strlen(s) + 5) * sizeof(char));
     }
     void given(int charsWritten)
     {
@@ -64,6 +67,25 @@ TEST(sprintf, InsertString)
     given(sprintf(output, "Hello %s\n", "World"));
 }
 //END: RefactoredTests
+
+// MY OWN TESTS
+TEST(sprintf, NullString)
+{
+    expect("\n");
+    given(sprintf(output, "\n"));
+}
+
+TEST(sprintf, FormatOperations)
+{
+    expect("1");
+    given(sprintf(output,"%d",1));
+}
+
+TEST(sprintf, LongString)
+{
+    expect("Ding Dong. Hola, ¿Que tal?. Mi nombre es Elder Price...");
+    given(sprintf(output, "Ding Dong. Hola, ¿Que tal?. Mi nombre es Elder Price..."));
+}
 
 #else //START: Duplication
 //START: FormatSpace

@@ -30,6 +30,9 @@ TEST_GROUP_RUNNER(sprintf)
 {
     RUN_TEST_CASE(sprintf, NoFormatOperations);
     RUN_TEST_CASE(sprintf, InsertString);
+    RUN_TEST_CASE(sprintf, NullString);
+    RUN_TEST_CASE(sprintf, FormatOperations);
+    //RUN_TEST_CASE(sprintf, LongString);
 #if 0
     RUN_TEST_CASE(sprintf, StringWithSpace);
 #endif

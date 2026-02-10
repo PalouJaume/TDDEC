@@ -31,22 +31,25 @@
 
 TEST_GROUP(sprintf);
 
-static char output[100];
+static char *output;
 static const char * expected;
 
 TEST_SETUP(sprintf)
 {
-    memset(output, 0xaa, sizeof output);
+    //memset(output, 0xaa, sizeof output);
     expected = "";
 }
 
 TEST_TEAR_DOWN(sprintf)
 {
+    free(output);
 }
 
 static void expect(const char * s)
 {
     expected = s;
+    output = (char *)malloc(strlen(s) + 5);
+    memset(output, 0xaa, strlen(s) + 5);
 }
 
 static void given(int charsWritten)
@@ -69,7 +72,20 @@ TEST(sprintf, InsertString)
     expect("Hello World\n");
     given(sprintf(output, "Hello %s\n", "World"));
 }
-#endif  
+#endif
+
+// My own tests
+TEST(sprintf, NullString)
+{
+    expect("");
+    given(sprintf(output, ""));
+}
+
+TEST(sprintf, FormatOperations) 
+{
+    expect("1");
+    given(sprintf(output, "%d", 1));
+}
 
 /* to run this also change in SprintfTestRunner.c */
 #if 0 
