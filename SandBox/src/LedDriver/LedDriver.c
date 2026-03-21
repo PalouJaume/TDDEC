@@ -32,6 +32,8 @@
 
 static uint16_t* ledsAddress;
 static uint16_t ledsImage;
+static enum LOGIC_TYPE logicType;
+static enum LED_ORDER orderType;
 
 enum {ALL_LEDS_ON = ~0, ALL_LEDS_OFF = ~ALL_LEDS_ON};
 enum {FIRST_LED = 1, LAST_LED = 16};
@@ -43,7 +45,8 @@ static BOOL IsLedOutOfBounds(int ledNumber)
 
 static uint16_t convertLedNumberToBit(int ledNumber)
 {
-    return 1 << (ledNumber - 1);
+
+    return (orderType == NORMAL_ORDER) ? 1 << (ledNumber - 1) : 1 << (sizeof(uint16_t)*8 - 1 - ledNumber + 1);
 }
 
 static void updateHardware(void)
@@ -53,19 +56,27 @@ static void updateHardware(void)
 
 static void setLedImageBit(int ledNumber)
 {
-    ledsImage |= convertLedNumberToBit(ledNumber); 
+    if (logicType == NORMAL_LOGIC)
+        ledsImage |= convertLedNumberToBit(ledNumber);
+    else 
+        ledsImage &= ~(convertLedNumberToBit(ledNumber)); 
 }
 
 static void clearLedImageBit(int ledNumber)
 {
-    ledsImage &= ~(convertLedNumberToBit(ledNumber));
+    if (logicType == NORMAL_LOGIC)
+        ledsImage &= ~(convertLedNumberToBit(ledNumber));
+    else 
+        ledsImage |= convertLedNumberToBit(ledNumber);
 }
 
 
-void LedDriver_Create(uint16_t * address)
+void LedDriver_Create(uint16_t* address, enum LOGIC_TYPE logic, enum LED_ORDER order)
 {
     ledsAddress = address;
-    ledsImage = ALL_LEDS_OFF;
+    ledsImage = (logicType == NORMAL_LOGIC) ? ALL_LEDS_OFF : (uint16_t)~ALL_LEDS_OFF;
+    logicType = logic;
+    orderType = order;
     updateHardware();
 }
 
@@ -96,13 +107,13 @@ void LedDriver_TurnOff(int ledNumber)
 
 void LedDriver_TurnAllOn(void)
 {
-    ledsImage = ALL_LEDS_ON;
+    ledsImage = (logicType == NORMAL_LOGIC) ? ALL_LEDS_ON : ALL_LEDS_OFF;
     updateHardware();
 }
 
 void LedDriver_TurnAllOff(void)
 {
-    ledsImage = ALL_LEDS_OFF;
+    ledsImage = (logicType == NORMAL_LOGIC) ? ALL_LEDS_OFF : ALL_LEDS_ON;
     updateHardware();
 }
 
@@ -111,7 +122,7 @@ BOOL LedDriver_IsOn(int ledNumber)
     if (IsLedOutOfBounds(ledNumber))
         return FALSE;
 
-    return ledsImage & (convertLedNumberToBit(ledNumber));
+    return (logicType == NORMAL_LOGIC) ? ledsImage & (convertLedNumberToBit(ledNumber)) : !(ledsImage & (convertLedNumberToBit(ledNumber)));
 }
 
 BOOL LedDriver_IsOff(int ledNumber)

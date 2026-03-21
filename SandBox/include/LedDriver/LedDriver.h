@@ -33,7 +33,17 @@
 
 typedef int BOOL;
 
-void LedDriver_Create(uint16_t * address);
+enum LOGIC_TYPE {
+    NORMAL_LOGIC,
+    INVERTED_LOGIC
+};
+
+enum LED_ORDER {
+    NORMAL_ORDER,
+    REVERSE_ORDER
+};
+
+void LedDriver_Create(uint16_t * address, enum LOGIC_TYPE logic, enum LED_ORDER order);
 void LedDriver_Destroy(void);
 void LedDriver_TurnOn(int ledNumber);
 void LedDriver_TurnOff(int ledNumber);

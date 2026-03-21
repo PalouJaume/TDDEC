@@ -33,9 +33,37 @@
 
 TEST_GROUP(LedDriver);
 static uint16_t virtualLeds;
+
+#define LOGIC_TYPE NORMAL_LOGIC
+#define LED_ORDER  REVERSE_ORDER
+
+static uint16_t reverse_order(uint16_t value)
+{
+    uint16_t res = 0;
+    for(unsigned i = 0; i < sizeof(uint16_t)*8; i++)
+    {
+        if (value & (1 << i))
+            res |= 1 << ((sizeof(uint16_t)*8 - 1) - i);
+    }
+
+    return res;
+}
+
+static uint16_t result(uint16_t expected)
+{
+    uint16_t res = 0x0000;
+
+    if(LED_ORDER == REVERSE_ORDER)
+        res = reverse_order(expected);
+    else 
+        res = expected; 
+
+    return (LOGIC_TYPE == NORMAL_LOGIC) ? res : (uint16_t)~res;
+}
+
 TEST_SETUP(LedDriver)
 {
-    LedDriver_Create(&virtualLeds);
+    LedDriver_Create(&virtualLeds, LOGIC_TYPE, LED_ORDER);
 }
 
 TEST_TEAR_DOWN(LedDriver)
@@ -45,87 +73,122 @@ TEST_TEAR_DOWN(LedDriver)
 TEST(LedDriver, StartHere)
 {
    //TEST_FAIL_MESSAGE("Start here");
+   //TEST_ASSERT_EQUAL_HEX16(0x8000, reverse_order(0x0001));
 }
 
 TEST(LedDriver, LedsOffAfterCreate)
 {
     uint16_t virtualleds = 0xffff;
-    LedDriver_Create(&virtualleds);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualleds);
+    LedDriver_Create(&virtualleds, LOGIC_TYPE, LED_ORDER);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualleds);
 }
 
 TEST(LedDriver, TurnOnLedOne)
 {
     LedDriver_TurnOn(1);
-    TEST_ASSERT_EQUAL_HEX16(1, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+         result(0x0001),
+         virtualLeds);
 }
 
 TEST(LedDriver, TurnOffLedOne)
 {
     LedDriver_TurnOn(1);
     LedDriver_TurnOff(1);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);
 }
 
 TEST(LedDriver, TurnOnMultipleLeds)
 {
     LedDriver_TurnOn(9); // virtualLeds <= 16'b0000_0001_0000_0000
     LedDriver_TurnOn(8); // virtualLeds <= 16'b0000_0001_1000_0000
-    TEST_ASSERT_EQUAL_HEX16(0x180, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+         result(0x180),
+         virtualLeds);
 }
 
 TEST(LedDriver, TurnOffAnyLed)
 {
     LedDriver_TurnAllOn();
     LedDriver_TurnOff(8);
-    TEST_ASSERT_EQUAL_HEX16(0xff7f, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0xff7f),
+         virtualLeds);
 }
 
 TEST(LedDriver, AllOn)
 {
     LedDriver_TurnAllOn();
-    TEST_ASSERT_EQUAL_HEX16(0xffff, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+         result(0xffff),
+         virtualLeds);
 }
 
 TEST(LedDriver, LedMemoryIsNotReadable)
 {
     virtualLeds = 0xffff;
     LedDriver_TurnOn(8);
-    TEST_ASSERT_EQUAL_HEX16(0x0080, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0080),
+         virtualLeds);
 }
 
 TEST(LedDriver, UpperAndLowerBounds)
 {
     LedDriver_TurnOn(1);
     LedDriver_TurnOn(16);
-    TEST_ASSERT_EQUAL_HEX16(0X8001, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x8001),
+         virtualLeds);
 }
 
 TEST(LedDriver, OutOfBoundsChangesNothing)
 {
     LedDriver_TurnOn(-1);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);
     LedDriver_TurnOn(0);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);
     LedDriver_TurnOn(17);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);
     LedDriver_TurnOn(33);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);
     LedDriver_TurnOn(3141);
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);
 }
 
 TEST(LedDriver, OutOfBoundsTurnOffChangesNothing)
 {
     LedDriver_TurnAllOn();
     LedDriver_TurnOff(-1);
-    TEST_ASSERT_EQUAL_HEX16(0xffff, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0xffff),
+         virtualLeds);
     LedDriver_TurnOff(17);
-    TEST_ASSERT_EQUAL_HEX16(0xffff, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0xffff),
+         virtualLeds);
     LedDriver_TurnOff(33);
-    TEST_ASSERT_EQUAL_HEX16(0xffff, virtualLeds);    
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0xffff),
+         virtualLeds);    
     LedDriver_TurnOff(3141);
-    TEST_ASSERT_EQUAL_HEX16(0xffff, virtualLeds);    
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0xffff),
+         virtualLeds);    
 }
 
 TEST(LedDriver, OutOfBoundsProducesRuntimeError)
@@ -168,12 +231,16 @@ TEST(LedDriver, TurnOffMultipleLeds)
     LedDriver_TurnAllOn();
     LedDriver_TurnOff(9);
     LedDriver_TurnOff(8);
-    TEST_ASSERT_EQUAL_HEX16((~0x180)&0xffff, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(
+        result((~0x0180)&0xffff),
+         virtualLeds);
 }
 
 TEST(LedDriver, AllOff)
 {
     LedDriver_TurnAllOn();
     LedDriver_TurnAllOff();
-    TEST_ASSERT_EQUAL_HEX16(0, virtualLeds);    
+    TEST_ASSERT_EQUAL_HEX16(
+        result(0x0000),
+         virtualLeds);    
 }
