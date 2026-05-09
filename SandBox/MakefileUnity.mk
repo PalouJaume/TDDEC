@@ -15,11 +15,14 @@ UNITY_CFLAGS += -DUNITY_OUTPUT_CHAR=UnityOutputCharSpy_OutputChar
 SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/src/LedDriver \
   $(PROJECT_HOME_DIR)/src/CircularBuffer \
+  $(PROJECT_HOME_DIR)/src/HomeAutomation \
+
 
 TEST_SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/unity\
 	$(PROJECT_HOME_DIR)/unity/LedDriver\
   $(PROJECT_HOME_DIR)/unity/CircularBuffer\
+  $(PROJECT_HOME_DIR)/unity/HomeAutomation\
 	$(UNITY_HOME)/src\
     $(UNITY_HOME)/extras/fixture/src\
     $(UNITY_HOME)/extras/fixture/test\
@@ -34,6 +37,7 @@ INCLUDE_DIRS =\
   $(UNITY_HOME)/extras/fixture/test\
   $(PROJECT_HOME_DIR)/include/LedDriver\
   $(PROJECT_HOME_DIR)/include/CircularBuffer\
+  $(PROJECT_HOME_DIR)/include/HomeAutomation\
   $(PROJECT_HOME_DIR)/include/util\
   $(PROJECT_HOME_DIR)/mocks\
 

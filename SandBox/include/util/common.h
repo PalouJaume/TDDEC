@@ -24,18 +24,23 @@
 /*-    www.renaissancesoftware.net james@renaissancesoftware.net       -*/
 /*- ------------------------------------------------------------------ -*/
 
-#include "unity_fixture.h"
+#ifndef D_common_H
+#define D_common_H
 
-static void RunAllTests(void)
-{
-    //RUN_TEST_GROUP(LedDriver);
-    //RUN_TEST_GROUP(CircularBuffer);
-    RUN_TEST_GROUP(LightControllerSpy);
-    RUN_TEST_GROUP(FakeTimeService);
-    RUN_TEST_GROUP(LightScheduler);
-}
+#ifndef BOOL
+#define BOOL int
+#endif
 
-int main(int ac, char* av[])
-{
-    return UnityMain(ac, av, RunAllTests);
-}
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef NULL
+#define NULL 0
+#endif
+
+#endif

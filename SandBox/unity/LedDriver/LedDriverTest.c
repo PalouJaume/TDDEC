@@ -28,7 +28,6 @@
 #include "LedDriver.h"
 #include "stdint.h"
 
-#include "unity_fixture.h"
 #include "RuntimeErrorStub.h"
 
 TEST_GROUP(LedDriver);
