@@ -30,9 +30,15 @@ static void RunAllTests(void)
 {
     //RUN_TEST_GROUP(LedDriver);
     //RUN_TEST_GROUP(CircularBuffer);
-    RUN_TEST_GROUP(LightControllerSpy);
-    RUN_TEST_GROUP(FakeTimeService);
-    RUN_TEST_GROUP(LightScheduler);
+    //RUN_TEST_GROUP(LightControllerSpy);
+    //RUN_TEST_GROUP(FakeTimeService);
+    //RUN_TEST_GROUP(LightScheduler);
+    //RUN_TEST_GROUP(FakeClockService);
+    //RUN_TEST_GROUP(CallbackSpy);
+    //RUN_TEST_GROUP(AlarmClock);
+    RUN_TEST_GROUP(FakeRFIDService);
+    RUN_TEST_GROUP(EmailServiceSpy);
+    RUN_TEST_GROUP(WhoIsHome);
 }
 
 int main(int ac, char* av[])

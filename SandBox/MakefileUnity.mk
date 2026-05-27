@@ -13,16 +13,19 @@ UNITY_BUILD_HOME = ../code/unity.framework/extras/fixture/build
 UNITY_CFLAGS += -DUNITY_OUTPUT_CHAR=UnityOutputCharSpy_OutputChar
 
 SRC_DIRS = \
-	$(PROJECT_HOME_DIR)/src/LedDriver \
-  $(PROJECT_HOME_DIR)/src/CircularBuffer \
-  $(PROJECT_HOME_DIR)/src/HomeAutomation \
-
+	$(PROJECT_HOME_DIR)/src/LedDriver\
+  $(PROJECT_HOME_DIR)/src/CircularBuffer\
+  $(PROJECT_HOME_DIR)/src/HomeAutomation\
+  $(PROJECT_HOME_DIR)/src/AlarmClock\
+  $(PROJECT_HOME_DIR)/src/WhoIsHome\
 
 TEST_SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/unity\
 	$(PROJECT_HOME_DIR)/unity/LedDriver\
   $(PROJECT_HOME_DIR)/unity/CircularBuffer\
   $(PROJECT_HOME_DIR)/unity/HomeAutomation\
+  $(PROJECT_HOME_DIR)/unity/AlarmClock\
+  $(PROJECT_HOME_DIR)/unity/WhoIsHome\
 	$(UNITY_HOME)/src\
     $(UNITY_HOME)/extras/fixture/src\
     $(UNITY_HOME)/extras/fixture/test\
@@ -38,6 +41,8 @@ INCLUDE_DIRS =\
   $(PROJECT_HOME_DIR)/include/LedDriver\
   $(PROJECT_HOME_DIR)/include/CircularBuffer\
   $(PROJECT_HOME_DIR)/include/HomeAutomation\
+  $(PROJECT_HOME_DIR)/include/AlarmClock\
+  $(PROJECT_HOME_DIR)/include/WhoIsHome\
   $(PROJECT_HOME_DIR)/include/util\
   $(PROJECT_HOME_DIR)/mocks\
 
