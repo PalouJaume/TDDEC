@@ -16,6 +16,7 @@
         "${workspaceFolder}/SandBox/include/HomeAutomation",
         "${workspaceFolder}/SandBox/include/AlarmClock",
         "${workspaceFolder}/SandBox/include/WhoIsHome",
+        "${workspaceFolder}/SandBox/include/CircularBuffer",
         "${workspaceFolder}/SandBox/include/util",
         "${workspaceFolder}/SandBox/mocks"
       ],

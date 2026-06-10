@@ -15,3 +15,13 @@ TEST_GROUP_RUNNER(CircularBuffer)
     RUN_TEST_CASE(CircularBuffer, IsEmptyTest);
     RUN_TEST_CASE(CircularBuffer, IsFullTest);
 }
+
+TEST_GROUP_RUNNER(CircularBufferPrint)
+{
+    RUN_TEST_CASE(CircularBufferPrint, StartHere);
+    RUN_TEST_CASE(CircularBufferPrint, PrintEmpty);
+    RUN_TEST_CASE(CircularBufferPrint, PrintAfterOneIsPut);
+    RUN_TEST_CASE(CircularBufferPrint, PrintNotYetWrappedOrFull);
+    RUN_TEST_CASE(CircularBufferPrint, PrintNotYetWrappedAndIsFull);
+    RUN_TEST_CASE(CircularBufferPrint, PrintOldToNewWhenWrappedAndFull);   
+}

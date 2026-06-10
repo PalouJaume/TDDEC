@@ -44,5 +44,6 @@ RES_STATUS LightScheduler_ScheduleTurnOn(int id, Day day, int minuteOfDay);
 RES_STATUS LightScheduler_ScheduleTurnOff(int id, Day day, int minuteOfDay);
 void LightScheduler_RemoveSchedule(int id, Day day, int minuteOfDay);
 void LightScheduler_WakeUp(void);
+void LightScheduler_Randomize(int id, Day day, int minuteOfDay);
 
 #endif /* D_LightScheduler_H */

@@ -6,13 +6,13 @@
 
 TEST_GROUP(LightScheduler);
 
-void setTimeTo(int day, int minuteOfDay)
+static void setTimeTo(int day, int minuteOfDay)
 {
     FakeTimeService_SetDay(day);
     FakeTimeService_SetMinute(minuteOfDay);
 }
 
-void checkLightState(int id, int level)
+static void checkLightState(int id, int level)
 {
     if (id == LIGHT_ID_UNKNOWN)
     {

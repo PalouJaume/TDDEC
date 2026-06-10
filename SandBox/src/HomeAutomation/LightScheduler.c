@@ -1,6 +1,7 @@
 #include "LightScheduler.h"
 #include "TimeService.h"
 #include "LightController.h"
+#include "RandomMinute.h"
 
 typedef struct
 {
@@ -141,5 +142,23 @@ void LightScheduler_WakeUp(void)
     for (int i = 0; i < MAX_EVENTS; i++)
     {
         processEventDueNow(&time, &scheduledEvents[i]);
+    }
+}
+
+void LightScheduler_Randomize(int id, Day day, int minuteOfDay)
+{
+    ScheduledLightEvent *cur;
+    for (int i = 0; i < MAX_EVENTS; i++)
+    {
+        cur = &scheduledEvents[i];
+        if (cur->id != UNUSED)
+        {
+            if (cur->id == id &&
+                cur->day == day &&
+                cur->minuteOfDay == minuteOfDay)
+            {
+                cur->minuteOfDay += RandomMinute_Get();
+            }
+        }
     }
 }
