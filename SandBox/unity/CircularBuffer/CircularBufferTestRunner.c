@@ -23,5 +23,16 @@ TEST_GROUP_RUNNER(CircularBufferPrint)
     RUN_TEST_CASE(CircularBufferPrint, PrintAfterOneIsPut);
     RUN_TEST_CASE(CircularBufferPrint, PrintNotYetWrappedOrFull);
     RUN_TEST_CASE(CircularBufferPrint, PrintNotYetWrappedAndIsFull);
-    RUN_TEST_CASE(CircularBufferPrint, PrintOldToNewWhenWrappedAndFull);   
+    RUN_TEST_CASE(CircularBufferPrint, PrintOldToNewWhenWrappedAndFull); 
+    RUN_TEST_CASE(CircularBufferPrint, PrintFixColumnSize);
+    RUN_TEST_CASE(CircularBufferPrint, PrintMultipleLines);
+    RUN_TEST_CASE(CircularBufferPrint, Addcharacter);  
+}
+
+TEST_GROUP_RUNNER(BufferFormatter)
+{
+    RUN_TEST_CASE(BufferFormatter, StartHere);
+    RUN_TEST_CASE(BufferFormatter, OneBlancSpace);
+    RUN_TEST_CASE(BufferFormatter, TwoBlancSpace);
+    RUN_TEST_CASE(BufferFormatter, ThreeBlancSpace);
 }
