@@ -19,6 +19,7 @@ SRC_DIRS = \
   $(PROJECT_HOME_DIR)/src/AlarmClock\
   $(PROJECT_HOME_DIR)/src/WhoIsHome\
   $(PROJECT_HOME_DIR)/src/Util\
+  $(PROJECT_HOME_DIR)/src/IO\
 
 TEST_SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/unity\
@@ -28,6 +29,7 @@ TEST_SRC_DIRS = \
   $(PROJECT_HOME_DIR)/unity/AlarmClock\
   $(PROJECT_HOME_DIR)/unity/WhoIsHome\
   $(PROJECT_HOME_DIR)/unity/Util\
+  $(PROJECT_HOME_DIR)/unity/IO\
 	$(UNITY_HOME)/src\
     $(UNITY_HOME)/extras/fixture/src\
     $(UNITY_HOME)/extras/fixture/test\
@@ -46,6 +48,7 @@ INCLUDE_DIRS =\
   $(PROJECT_HOME_DIR)/include/AlarmClock\
   $(PROJECT_HOME_DIR)/include/WhoIsHome\
   $(PROJECT_HOME_DIR)/include/Util\
+  $(PROJECT_HOME_DIR)/include/IO\
   $(PROJECT_HOME_DIR)/mocks\
 
 include $(UNITY_BUILD_HOME)/MakefileWorker.mk

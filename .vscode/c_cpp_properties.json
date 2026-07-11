@@ -18,6 +18,7 @@
         "${workspaceFolder}/SandBox/include/WhoIsHome",
         "${workspaceFolder}/SandBox/include/CircularBuffer",
         "${workspaceFolder}/SandBox/include/util",
+        "${workspaceFolder}/SandBox/include/IO",
         "${workspaceFolder}/SandBox/mocks"
       ],
       "defines": [
