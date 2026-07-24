@@ -12,4 +12,9 @@ TEST_GROUP_RUNNER(Flash)
     RUN_TEST_CASE(Flash, WriteSucceeds_IgnoresOtherBitsUntilReady);
     RUN_TEST_CASE(Flash, WriteFails_Timeout);
     RUN_TEST_CASE(Flash, WriteFails_TimeoutAtEndOfTime);
+    RUN_TEST_CASE(Flash, ReadCFIQueryIdentificationString);
+    RUN_TEST_CASE(Flash, EraseSuspendAndResume_EraseComplete);
+    RUN_TEST_CASE(Flash, EraseSuspendAndResume_EraseSuspended);
+    RUN_TEST_CASE(Flash, EraseSuspendAndResume_SuspendResume);
+    RUN_TEST_CASE(Flash, EraseSuspendAndResume_NoSuspendResume);
 }

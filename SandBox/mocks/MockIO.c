@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "unity.h"
+#include "unity_fixture.h"
 
 typedef struct Expectation
 {

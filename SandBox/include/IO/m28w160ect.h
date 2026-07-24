@@ -12,7 +12,14 @@ typedef enum
 typedef enum
 {
     ProgramCommand = 0x40,
-    Reset = 0xff
+	ReadArrayCommand = 0xFF,
+	EraseSetupCommand = 0x20,
+	EraseConfirmCommand = 0xD0,
+	ProgramEraseSuspendCommand = 0xB0,
+	ProgramEraseResumeCommand = 0xD0,
+	ReadStatusCommand = 0x70,
+	ClearStatusCommand = 0x50,
+	CFIQueryCommand = 0x98
 } Flash_Command;
 
 typedef enum
@@ -26,5 +33,10 @@ typedef enum
 	BlockProtectionErrorBit = 1<<1,
 	ReservedBit = 1
 } StatusRegisterBits;
+
+typedef enum
+{
+	ANY_ADDRESS = 0xFF,
+} Addresses;
 
 #endif /* D_M28W160ECT_H */
