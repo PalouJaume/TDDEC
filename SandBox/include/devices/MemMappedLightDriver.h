@@ -24,33 +24,16 @@
 /*-    www.renaissancesoftware.net james@renaissancesoftware.net       -*/
 /*- ------------------------------------------------------------------ -*/
 
-#include "unity_fixture.h"
 
-static void RunAllTests(void)
-{
-    //RUN_TEST_GROUP(LedDriver);
-    //RUN_TEST_GROUP(CircularBuffer);
-    //RUN_TEST_GROUP(CircularBufferPrint);
-    //RUN_TEST_GROUP(BufferFormatter);
-    //RUN_TEST_GROUP(LightControllerSpy);
-    //RUN_TEST_GROUP(FakeTimeService);
-    //RUN_TEST_GROUP(LightScheduler);
-    //RUN_TEST_GROUP(FakeClockService);
-    //RUN_TEST_GROUP(CallbackSpy);
-    //RUN_TEST_GROUP(AlarmClock);
-    //RUN_TEST_GROUP(FakeRFIDService);
-    //RUN_TEST_GROUP(EmailServiceSpy);
-    //RUN_TEST_GROUP(WhoIsHome);
-    //RUN_TEST_GROUP(RandomMinute);
-    //RUN_TEST_GROUP(LightSchedulerRandomize);
-    //RUN_TEST_GROUP(FormatOutputSpy);
-    //RUN_TEST_GROUP(Flash);
-    RUN_TEST_GROUP(LightController);
-    RUN_TEST_GROUP(LightDriverSpy);
-    RUN_TEST_GROUP(LightDriver);
-}
+#ifndef D_MemMappedLightDriver_H
+#define D_MemMappedLightDriver_H
 
-int main(int ac, char* av[])
-{
-    return UnityMain(ac, av, RunAllTests);
-}
+#include "LightDriver.h"
+#include <stdint.h>
+
+LightDriver MemMappedLightDriver_Create(int lightId, uint32_t * address);
+void MemMappedLightDriver_Destroy(LightDriver);
+void MemMappedLightDriver_TurnOn(LightDriver);
+void MemMappedLightDriver_TurnOff(LightDriver);
+
+#endif  /* D_MemMappedLightDriver_H */

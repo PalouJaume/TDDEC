@@ -19,6 +19,8 @@
         "${workspaceFolder}/SandBox/include/CircularBuffer",
         "${workspaceFolder}/SandBox/include/util",
         "${workspaceFolder}/SandBox/include/IO",
+        "${workspaceFolder}/SandBox/include/devices",
+        "${workspaceFolder}/SandBox/mocks",
         "${workspaceFolder}/SandBox/mocks"
       ],
       "defines": [

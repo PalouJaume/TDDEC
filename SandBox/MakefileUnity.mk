@@ -20,19 +20,21 @@ SRC_DIRS = \
   $(PROJECT_HOME_DIR)/src/WhoIsHome\
   $(PROJECT_HOME_DIR)/src/Util\
   $(PROJECT_HOME_DIR)/src/IO\
+  $(PROJECT_HOME_DIR)/src/devices\
 
 TEST_SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/unity\
 	$(PROJECT_HOME_DIR)/unity/LedDriver\
   $(PROJECT_HOME_DIR)/unity/CircularBuffer\
-  $(PROJECT_HOME_DIR)/unity/HomeAutomation\
   $(PROJECT_HOME_DIR)/unity/AlarmClock\
   $(PROJECT_HOME_DIR)/unity/WhoIsHome\
   $(PROJECT_HOME_DIR)/unity/Util\
   $(PROJECT_HOME_DIR)/unity/IO\
+  $(PROJECT_HOME_DIR)/unity/devices\
 	$(UNITY_HOME)/src\
-    $(UNITY_HOME)/extras/fixture/src\
-    $(UNITY_HOME)/extras/fixture/test\
+  $(UNITY_HOME)/extras/fixture/src\
+  $(UNITY_HOME)/extras/fixture/test\
+  ##$(PROJECT_HOME_DIR)/unity/HomeAutomation\
 
 MOCKS_SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/mocks\
@@ -49,6 +51,7 @@ INCLUDE_DIRS =\
   $(PROJECT_HOME_DIR)/include/WhoIsHome\
   $(PROJECT_HOME_DIR)/include/Util\
   $(PROJECT_HOME_DIR)/include/IO\
+  $(PROJECT_HOME_DIR)/include/devices\
   $(PROJECT_HOME_DIR)/mocks\
 
 include $(UNITY_BUILD_HOME)/MakefileWorker.mk

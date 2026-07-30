@@ -24,33 +24,52 @@
 /*-    www.renaissancesoftware.net james@renaissancesoftware.net       -*/
 /*- ------------------------------------------------------------------ -*/
 
-#include "unity_fixture.h"
+#include "LightController.h"
+#include <stdlib.h>
+#include <memory.h>
+#include "X10LightDriver.h"
+#include "LightDriverSpy.h"
+#include "AcmeWirelessLightDriver.h"
+#include "MemMappedLightDriver.h"
+#include "common.h"
 
-static void RunAllTests(void)
+static LightDriver lightDrivers[MAX_LIGHTS] =
+{ NULL };
+
+void LightController_Create(void)
 {
-    //RUN_TEST_GROUP(LedDriver);
-    //RUN_TEST_GROUP(CircularBuffer);
-    //RUN_TEST_GROUP(CircularBufferPrint);
-    //RUN_TEST_GROUP(BufferFormatter);
-    //RUN_TEST_GROUP(LightControllerSpy);
-    //RUN_TEST_GROUP(FakeTimeService);
-    //RUN_TEST_GROUP(LightScheduler);
-    //RUN_TEST_GROUP(FakeClockService);
-    //RUN_TEST_GROUP(CallbackSpy);
-    //RUN_TEST_GROUP(AlarmClock);
-    //RUN_TEST_GROUP(FakeRFIDService);
-    //RUN_TEST_GROUP(EmailServiceSpy);
-    //RUN_TEST_GROUP(WhoIsHome);
-    //RUN_TEST_GROUP(RandomMinute);
-    //RUN_TEST_GROUP(LightSchedulerRandomize);
-    //RUN_TEST_GROUP(FormatOutputSpy);
-    //RUN_TEST_GROUP(Flash);
-    RUN_TEST_GROUP(LightController);
-    RUN_TEST_GROUP(LightDriverSpy);
-    RUN_TEST_GROUP(LightDriver);
+    memset(lightDrivers, 0, sizeof lightDrivers);
 }
 
-int main(int ac, char* av[])
+void LightController_Destroy(void)
 {
-    return UnityMain(ac, av, RunAllTests);
+    int i;
+    for (i = 0; i < MAX_LIGHTS; i++)
+    {
+        LightDriver driver = lightDrivers[i];
+        LightDriver_Destroy(driver);
+        lightDrivers[i] = NULL;
+    }
 }
+
+BOOL LightController_Add(int id, LightDriver lightDriver)
+{
+    if (id < 0 || id >= MAX_LIGHTS)
+        return FALSE;
+
+    LightDriver_Destroy(lightDrivers[id]);
+
+    lightDrivers[id] = lightDriver;
+    return TRUE;
+}
+
+void LightController_On(int id)
+{
+    LightDriver_TurnOn(lightDrivers[id]);
+}
+
+void LightController_Off(int id)
+{
+    LightDriver_TurnOff(lightDrivers[id]);
+}
+

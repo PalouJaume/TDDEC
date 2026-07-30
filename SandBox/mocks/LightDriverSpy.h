@@ -1,11 +1,11 @@
 /***
  * Excerpted from "Test-Driven Development for Embedded C",
  * published by The Pragmatic Bookshelf.
- * Copyrights apply to this code. It may not be used to create training material, 
+ * Copyrights apply to this code. It may not be used to create training material,
  * courses, books, articles, and the like. Contact us if you are in doubt.
- * We make no guarantees that this code is fit for any purpose. 
+ * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/jgade for more book information.
-***/
+ ***/
 /*- ------------------------------------------------------------------ -*/
 /*-    Copyright (c) James W. Grenning -- All Rights Reserved          -*/
 /*-    For use by owners of Test-Driven Development for Embedded C,    -*/
@@ -24,33 +24,31 @@
 /*-    www.renaissancesoftware.net james@renaissancesoftware.net       -*/
 /*- ------------------------------------------------------------------ -*/
 
-#include "unity_fixture.h"
+#ifndef D_LightDriverSpy_H
+#define D_LightDriverSpy_H
 
-static void RunAllTests(void)
-{
-    //RUN_TEST_GROUP(LedDriver);
-    //RUN_TEST_GROUP(CircularBuffer);
-    //RUN_TEST_GROUP(CircularBufferPrint);
-    //RUN_TEST_GROUP(BufferFormatter);
-    //RUN_TEST_GROUP(LightControllerSpy);
-    //RUN_TEST_GROUP(FakeTimeService);
-    //RUN_TEST_GROUP(LightScheduler);
-    //RUN_TEST_GROUP(FakeClockService);
-    //RUN_TEST_GROUP(CallbackSpy);
-    //RUN_TEST_GROUP(AlarmClock);
-    //RUN_TEST_GROUP(FakeRFIDService);
-    //RUN_TEST_GROUP(EmailServiceSpy);
-    //RUN_TEST_GROUP(WhoIsHome);
-    //RUN_TEST_GROUP(RandomMinute);
-    //RUN_TEST_GROUP(LightSchedulerRandomize);
-    //RUN_TEST_GROUP(FormatOutputSpy);
-    //RUN_TEST_GROUP(Flash);
-    RUN_TEST_GROUP(LightController);
-    RUN_TEST_GROUP(LightDriverSpy);
-    RUN_TEST_GROUP(LightDriver);
-}
+#include "LightDriver.h"
+#include "LightController.h"
 
-int main(int ac, char* av[])
+LightDriver LightDriverSpy_Create(int id);
+/*void LightDriverSpy_Destroy(LightDriver);
+void LightDriverSpy_TurnOn(LightDriver);
+void LightDriverSpy_TurnOff(LightDriver);*/
+
+/* Functions just needed by the spy */
+void LightDriverSpy_Reset(void);
+int LightDriverSpy_GetState(int id);
+int LightDriverSpy_GetLastId(void);
+int LightDriverSpy_GetLastState(void);
+void LightDriverSpy_AddSpiesToController(void);
+void LightDriverSpy_InstallInterface(void);
+
+enum
 {
-    return UnityMain(ac, av, RunAllTests);
-}
+    LIGHT_ID_UNKNOWN = -1,
+    LIGHT_STATE_UNKNOWN = -1,
+    LIGHT_OFF = 0,
+    LIGHT_ON = 1
+};
+
+#endif /* D_LightDriverSpy_H */

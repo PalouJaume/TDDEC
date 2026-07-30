@@ -43,4 +43,8 @@
 #define NULL 0
 #endif
 
+// This is used to represent production code that cannot run in the
+// test environment.
+void explodesInTestEnvironment(void *);
+
 #endif
