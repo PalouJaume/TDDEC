@@ -10,4 +10,5 @@ TEST_GROUP_RUNNER(LightController)
     RUN_TEST_CASE(LightController, ValidIdUpperRange);
     RUN_TEST_CASE(LightController, InvalidIdBeyondUpperRange);
     RUN_TEST_CASE(LightController, NonAddedLightDoesNothing);
+    RUN_TEST_CASE(LightController, turnOnDifferentDriverTypes);
 }

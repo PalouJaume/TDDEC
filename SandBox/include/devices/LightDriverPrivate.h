@@ -3,7 +3,8 @@
 
 typedef struct LightDriverStruct
 {
-    LightDriverType type;
+    LightDriverInterface vtable;
+    const char *type;
     int id;
 } LightDriverStruct;
 
