@@ -43,3 +43,82 @@ TEST(LightDriverSpy, Destroy)
     LightDriver_Destroy(spy);
     // LightDriverSpy_Destroy(spy);
 }
+
+TEST(LightDriverSpy, DefaultBrightLevel)
+{
+    LONGS_EQUAL(50, LightDriverSpy_GetBright(1));
+}
+
+TEST(LightDriverSpy, Brighten)
+{
+    LightDriver_Brighten(lightDriverSpy);
+
+    LONGS_EQUAL(60, LightDriverSpy_GetBright(1));
+}
+
+TEST(LightDriverSpy, BrightenSaturates)
+{
+    for (int i = 0; i < 3; i++)
+        LightDriver_Brighten(lightDriverSpy);
+
+    LONGS_EQUAL(80, LightDriverSpy_GetBright(1));
+
+    for (int i = 0; i < 10; i++)
+        LightDriver_Brighten(lightDriverSpy);
+
+    LONGS_EQUAL(100, LightDriverSpy_GetBright(1));
+}
+
+TEST(LightDriverSpy, BrightenMultipleLights)
+{
+    LightDriver spy = LightDriverSpy_Create(3);
+
+    LightDriver_Brighten(lightDriverSpy);
+
+    LONGS_EQUAL(60, LightDriverSpy_GetBright(1));
+    LONGS_EQUAL(50, LightDriverSpy_GetBright(3));
+
+    LightDriver_Destroy(spy);
+}
+
+TEST(LightDriverSpy, Dim)
+{
+    LightDriver_Dim(lightDriverSpy);
+
+    LONGS_EQUAL(40, LightDriverSpy_GetBright(1));
+}
+
+TEST(LightDriverSpy, DimSaturates)
+{
+    for (int i = 0; i < 3; i++)
+        LightDriver_Dim(lightDriverSpy);
+
+    LONGS_EQUAL(20, LightDriverSpy_GetBright(1));
+
+    for (int i = 0; i < 10; i++)
+        LightDriver_Dim(lightDriverSpy);
+
+    LONGS_EQUAL(0, LightDriverSpy_GetBright(1));
+}
+
+TEST(LightDriverSpy, Strobe)
+{
+    LightDriver_Strobe(lightDriverSpy);
+    LONGS_EQUAL(LIGHT_STROBE, LightDriverSpy_GetState(1));
+}
+
+TEST(LightDriverSpy, PartialInterface)
+{
+    LightDriver spy = LightDriverSpy_PartialCreate(1);
+
+    LightDriver_Brighten(spy);
+    LONGS_EQUAL(50, LightDriverSpy_GetBright(1));
+
+    LightDriver_Dim(spy);
+    LONGS_EQUAL(50, LightDriverSpy_GetBright(1));
+
+    LightDriver_Strobe(spy);
+    LONGS_EQUAL(LIGHT_STROBE, LightDriverSpy_GetState(1));
+
+    LightDriver_Destroy(spy);
+}

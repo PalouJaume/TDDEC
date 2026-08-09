@@ -11,6 +11,7 @@ CPP_PLATFORM = Gcc
 UNITY_BUILD_HOME = ../code/unity.framework/extras/fixture/build
 
 UNITY_CFLAGS += -DUNITY_OUTPUT_CHAR=UnityOutputCharSpy_OutputChar
+UNITY_ADDITIONAL_LDFLAGS += -lpthread
 
 SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/src/LedDriver\
@@ -21,8 +22,13 @@ SRC_DIRS = \
   $(PROJECT_HOME_DIR)/src/Util\
   $(PROJECT_HOME_DIR)/src/IO\
   $(PROJECT_HOME_DIR)/src/devices\
+  $(PROJECT_HOME_DIR)/src/MyOS/posix\
+  $(PROJECT_HOME_DIR)/src/RandomNumber\
 
 TEST_SRC_DIRS = \
+	$(UNITY_HOME)/src\
+  $(UNITY_HOME)/extras/fixture/src\
+  $(UNITY_HOME)/extras/fixture/test\
 	$(PROJECT_HOME_DIR)/unity\
 	$(PROJECT_HOME_DIR)/unity/LedDriver\
   $(PROJECT_HOME_DIR)/unity/CircularBuffer\
@@ -31,10 +37,8 @@ TEST_SRC_DIRS = \
   $(PROJECT_HOME_DIR)/unity/Util\
   $(PROJECT_HOME_DIR)/unity/IO\
   $(PROJECT_HOME_DIR)/unity/devices\
-	$(UNITY_HOME)/src\
-  $(UNITY_HOME)/extras/fixture/src\
-  $(UNITY_HOME)/extras/fixture/test\
-  ##$(PROJECT_HOME_DIR)/unity/HomeAutomation\
+  $(PROJECT_HOME_DIR)/unity/MyOS\
+  $(PROJECT_HOME_DIR)/unity/RandomNumber\
 
 MOCKS_SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/mocks\
@@ -52,6 +56,8 @@ INCLUDE_DIRS =\
   $(PROJECT_HOME_DIR)/include/Util\
   $(PROJECT_HOME_DIR)/include/IO\
   $(PROJECT_HOME_DIR)/include/devices\
+  $(PROJECT_HOME_DIR)/include/MyOs\
+  $(PROJECT_HOME_DIR)/include/RandomNumber\
   $(PROJECT_HOME_DIR)/mocks\
 
 include $(UNITY_BUILD_HOME)/MakefileWorker.mk

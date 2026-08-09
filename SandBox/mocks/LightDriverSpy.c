@@ -38,15 +38,30 @@ typedef struct LightDriverSpyStruct
 static void LightDriverSpy_TurnOn(LightDriver super);
 static void LightDriverSpy_TurnOff(LightDriver super);
 static void LightDriverSpy_Destroy(LightDriver super);
+static void LightDriverSpy_Brighten(LightDriver super);
+static void LightDriverSpy_Dim(LightDriver super);
+static void LightDriverSpy_Strobe(LightDriver super);
 
 static LightDriverInterfaceStruct interface =
     {
         .TurnOn = LightDriverSpy_TurnOn,
         .TurnOff = LightDriverSpy_TurnOff,
-        .Destroy = LightDriverSpy_Destroy
-    };
+        .Destroy = LightDriverSpy_Destroy,
+        .Brighten = LightDriverSpy_Brighten,
+        .Dim = LightDriverSpy_Dim,
+        .Strobe = LightDriverSpy_Strobe,
+};
+
+static LightDriverInterfaceStruct partial_interface =
+    {
+        .TurnOn = LightDriverSpy_TurnOn,
+        .TurnOff = LightDriverSpy_TurnOff,
+        .Destroy = LightDriverSpy_Destroy,
+        .Strobe = LightDriverSpy_Strobe,
+};
 
 static int states[MAX_LIGHTS];
+static int brightLevels[MAX_LIGHTS];
 static int lastId;
 static int lastState;
 
@@ -56,7 +71,9 @@ void LightDriverSpy_Reset(void)
     for (i = 0; i < MAX_LIGHTS; i++)
     {
         states[i] = LIGHT_STATE_UNKNOWN;
+        brightLevels[i] = DEFAULT_BRIGHT_LEVEL;
     }
+
     lastId = LIGHT_ID_UNKNOWN;
     lastState = LIGHT_STATE_UNKNOWN;
 }
@@ -71,19 +88,30 @@ void LightDriverSpy_AddSpiesToController(void)
     }
 }
 
-LightDriver LightDriverSpy_Create(int id)
+static LightDriver create(int id, LightDriverInterface i)
 {
     LightDriverSpy self = calloc(1, sizeof(LightDriverSpyStruct));
-    self->base.vtable = &interface;
+    self->base.vtable = i;
     self->base.type = "Spy";
     self->base.id = id;
     return (LightDriver)self;
+}
+
+LightDriver LightDriverSpy_Create(int id)
+{
+    return create(id, &interface);
+}
+
+LightDriver LightDriverSpy_PartialCreate(int id)
+{
+    return create(id, &partial_interface);
 }
 
 static void LightDriverSpy_Destroy(LightDriver super)
 {
     LightDriverSpy self = (LightDriverSpy)super;
     states[self->base.id] = LIGHT_STATE_UNKNOWN;
+    brightLevels[self->base.id] = DEFAULT_BRIGHT_LEVEL;
     free(self);
 }
 
@@ -106,9 +134,36 @@ static void LightDriverSpy_TurnOff(LightDriver super)
     save(self->base.id, LIGHT_OFF);
 }
 
+static void LightDriverSpy_Brighten(LightDriver super)
+{
+    LightDriverSpy self = (LightDriverSpy)super;
+    int id = self->base.id;
+
+    brightLevels[id] += brightLevels[id] < 100 ? 10 : 0;
+}
+
+static void LightDriverSpy_Dim(LightDriver super)
+{
+    LightDriverSpy self = (LightDriverSpy)super;
+    int id = self->base.id;
+
+    brightLevels[id] -= brightLevels[id] > 0 ? 10 : 0;
+}
+
+static void LightDriverSpy_Strobe(LightDriver super)
+{
+    LightDriverSpy self = (LightDriverSpy)super;
+    save(self->base.id, LIGHT_STROBE);
+}
+
 int LightDriverSpy_GetState(int id)
 {
     return states[id];
+}
+
+int LightDriverSpy_GetBright(int id)
+{
+    return brightLevels[id];
 }
 
 int LightDriverSpy_GetLastId(void)

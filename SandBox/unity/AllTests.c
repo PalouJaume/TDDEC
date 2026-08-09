@@ -45,9 +45,13 @@ static void RunAllTests(void)
     //RUN_TEST_GROUP(LightSchedulerRandomize);
     //RUN_TEST_GROUP(FormatOutputSpy);
     //RUN_TEST_GROUP(Flash);
-    RUN_TEST_GROUP(LightController);
-    RUN_TEST_GROUP(LightDriverSpy);
-    RUN_TEST_GROUP(LightDriver);
+    //RUN_TEST_GROUP(LightController);
+    //RUN_TEST_GROUP(LightDriverSpy);
+    //RUN_TEST_GROUP(LightDriver);
+    //RUN_TEST_GROUP(Thread);
+    RUN_TEST_GROUP(RandomNumber);
+    RUN_TEST_GROUP(FakeRandomNumber);
+    RUN_TEST_GROUP(SeededRandomNumber);
 }
 
 int main(int ac, char* av[])

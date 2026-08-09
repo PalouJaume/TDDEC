@@ -1,6 +1,6 @@
 #include "unity_fixture.h"
 
-#include "LightDriverSpy.h"
+#include "LightDriver.h"
 
 TEST_GROUP(LightDriver);
 

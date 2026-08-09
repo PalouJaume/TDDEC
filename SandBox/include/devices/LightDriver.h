@@ -8,6 +8,9 @@ typedef struct LightDriverInterfaceStruct *LightDriverInterface;
 void LightDriver_Destroy(LightDriver);
 void LightDriver_TurnOn(LightDriver);
 void LightDriver_TurnOff(LightDriver);
+void LightDriver_Brighten(LightDriver);
+void LightDriver_Dim(LightDriver);
+void LightDriver_Strobe(LightDriver);
 const char *LightDriver_GetType(LightDriver);
 int LightDriver_GetId(LightDriver);
 
