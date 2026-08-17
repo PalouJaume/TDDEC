@@ -41,28 +41,18 @@ typedef enum Month {
     JAN=1, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
 } Month;
 
-typedef struct Time Time;
-
-struct Time
-{
-    int usec;
-    int sec;
-    int minuteOfDay;
-    int minuteOfHour;
-    Day dayOfWeek;
-    int dayOfMonth;
-    Month month;
-};
+typedef struct Time *Time;
 
 void TimeService_Create(void);
 void TimeService_Destroy(void);
-int TimeService_GetMinute(void);
-int TimeService_GetDay(void);
+int TimeService_GetMinute(Time);
+int TimeService_GetDay(Time);
 
-void TimeService_GetTime(Time *);
+Time TimeService_GetTime(void);
+void TimeService_FreeTime(Time);
 
-BOOL TimeService_MatchesDayOfWeek(const Time *, Day day);
-BOOL TimeService_MatchesMinuteOfDay(const Time *, int minute);
+BOOL TimeService_MatchesDayOfWeek(const Time, Day day);
+BOOL TimeService_MatchesMinuteOfDay(const Time, int minute);
 BOOL TimeService_MatchesNow(int reactionDay, int minute);
 
 #endif  /* D_TimeService_H */

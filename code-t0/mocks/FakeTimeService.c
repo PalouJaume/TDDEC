@@ -1,11 +1,11 @@
 /***
  * Excerpted from "Test-Driven Development for Embedded C",
  * published by The Pragmatic Bookshelf.
- * Copyrights apply to this code. It may not be used to create training material, 
+ * Copyrights apply to this code. It may not be used to create training material,
  * courses, books, articles, and the like. Contact us if you are in doubt.
- * We make no guarantees that this code is fit for any purpose. 
+ * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/jgade for more book information.
-***/
+ ***/
 /*- ------------------------------------------------------------------ -*/
 /*-    Copyright (c) James W. Grenning -- All Rights Reserved          -*/
 /*-    For use by owners of Test-Driven Development for Embedded C,    -*/
@@ -26,8 +26,21 @@
 
 #include "FakeTimeService.h"
 
+#include "stdlib.h"
+
 static int theMinute;
 static int theDay;
+
+struct Time
+{
+    int usec;
+    int sec;
+    int minuteOfDay;
+    int minuteOfHour;
+    Day dayOfWeek;
+    int dayOfMonth;
+    Month month;
+};
 
 void TimeService_Create(void)
 {
@@ -39,16 +52,49 @@ void TimeService_Destroy(void)
 {
 }
 
-void TimeService_GetTime(Time * time)
+Time TimeService_GetTime(void)
 {
-    time->minuteOfDay = theMinute;
+    Time time = calloc(1, sizeof(struct Time));
+
     time->dayOfWeek = theDay;
+    time->minuteOfDay = theMinute;
+
+    return time;
 }
 
-
-int TimeService_GetMinute(void)
+void TimeService_FreeTime(Time time)
 {
-    return theMinute;
+    if (time != NULL)
+        free(time);
+}
+
+int TimeService_GetMinute(Time time)
+{
+    return time->minuteOfDay;
+}
+
+int TimeService_GetDay(Time time)
+{
+    return time->dayOfWeek;
+}
+
+BOOL TimeService_MatchesDayOfWeek(const Time time, Day day)
+{
+    Day today = time->dayOfWeek;
+
+    if (day == EVERYDAY)
+        return 1;
+
+    if (day == today)
+        return 1;
+
+    if (day == WEEKEND && (SATURDAY == today || SUNDAY == today))
+        return 1;
+
+    if (day == WEEKDAY && (today >= MONDAY && today <= FRIDAY))
+        return 1;
+
+    return 0;
 }
 
 void FakeTimeService_SetMinute(int minute)
@@ -60,9 +106,3 @@ void FakeTimeService_SetDay(int day)
 {
     theDay = day;
 }
-
-int TimeService_GetDay(void)
-{
-    return theDay;
-}
-

@@ -30,6 +30,7 @@
 
 #include "TimeService.h"
 
+// Bad Name
 enum  { LS_OK=0, LS_TOO_MANY_EVENTS, LS_ID_OUT_OF_BOUNDS };
 
 void LightScheduler_Create(void);

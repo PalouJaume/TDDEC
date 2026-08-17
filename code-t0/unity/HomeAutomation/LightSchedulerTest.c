@@ -1,11 +1,11 @@
 /***
  * Excerpted from "Test-Driven Development for Embedded C",
  * published by The Pragmatic Bookshelf.
- * Copyrights apply to this code. It may not be used to create training material, 
+ * Copyrights apply to this code. It may not be used to create training material,
  * courses, books, articles, and the like. Contact us if you are in doubt.
- * We make no guarantees that this code is fit for any purpose. 
+ * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/jgade for more book information.
-***/
+ ***/
 /*- ------------------------------------------------------------------ -*/
 /*-    Copyright (c) James W. Grenning -- All Rights Reserved          -*/
 /*-    For use by owners of Test-Driven Development for Embedded C,    -*/
@@ -24,34 +24,30 @@
 /*-    www.renaissancesoftware.net james@renaissancesoftware.net       -*/
 /*- ------------------------------------------------------------------ -*/
 
-
-
-
 #include "LightScheduler.h"
-#include "FakeLightController.h"
+#include "LightControllerSpy.h"
 #include "FakeTimeService.h"
 #include "FakeRandomMinute.h"
 
 #include "unity_fixture.h"
 
-
-TEST_GROUP(LightScheduler)
+TEST_GROUP(LightScheduler);
 
 static int id;
 
-static void setup()
+TEST_SETUP(LightScheduler)
 {
-  LightController_Create();
-  LightScheduler_Create();
+    TimeService_Create();
+    LightController_Create();
+    LightScheduler_Create();
 }
 
-static void teardown()
+TEST_TEAR_DOWN(LightScheduler)
 {
-   LightScheduler_Destroy();
-/*       TEST_POINTERS_EQUAL(NULL, (void *)FakeTimeSource_GetAlarmCallback()); */
+    TimeService_Destroy();
+    LightScheduler_Destroy();
+    /*       TEST_POINTERS_EQUAL(NULL, (void *)FakeTimeSource_GetAlarmCallback()); */
 }
-
-
 
 TEST(LightScheduler, CreateDoesNotChangeTheLights)
 {
@@ -61,9 +57,9 @@ TEST(LightScheduler, CreateDoesNotChangeTheLights)
 
 TEST(LightScheduler, CreateStartsOneMinuteAlarm)
 {
-/*    TEST_POINTERS_EQUAL((void *)LightScheduler_WakeUp, */
-/*                   (void *)FakeTimeSource_GetAlarmCallback()); */
-/*    TEST_ASSERT_EQUAL(60, FakeTimeSource_GetAlarmPeriod()); */
+    /*    TEST_POINTERS_EQUAL((void *)LightScheduler_WakeUp, */
+    /*                   (void *)FakeTimeSource_GetAlarmCallback()); */
+    /*    TEST_ASSERT_EQUAL(60, FakeTimeSource_GetAlarmPeriod()); */
 }
 
 TEST(LightScheduler, NoChangeToLightsDuringInitialization)
@@ -81,8 +77,8 @@ TEST(LightScheduler, NoScheduleNothingHappens)
 
 TEST(LightScheduler, ScheduleOnTodayNotTimeYet)
 {
-    LightScheduler_ScheduleTurnOn(3, EVERYDAY, 1200); 
-    FakeTimeService_SetMinute(1199); 
+    LightScheduler_ScheduleTurnOn(3, EVERYDAY, 1200);
+    FakeTimeService_SetMinute(1199);
     LightScheduler_WakeUp();
     TEST_ASSERT_EQUAL(LIGHT_ID_UNKNOWN, LightControllerSpy_GetLastId());
     TEST_ASSERT_EQUAL(LIGHT_STATE_UNKNOWN, LightControllerSpy_GetLastState());
@@ -285,28 +281,28 @@ TEST(LightScheduler, RejectsTooManyEvents)
     int i;
     for (i = 0; i < 128; i++)
         TEST_ASSERT_EQUAL(LS_OK,
-                    LightScheduler_ScheduleTurnOn(6, MONDAY, 600+i));
+                          LightScheduler_ScheduleTurnOn(6, MONDAY, 600 + i));
 
     TEST_ASSERT_EQUAL(LS_TOO_MANY_EVENTS,
-            LightScheduler_ScheduleTurnOn(6, MONDAY, 600+i));
+                      LightScheduler_ScheduleTurnOn(6, MONDAY, 600 + i));
 }
 
 TEST(LightScheduler, AcceptsValidLightIds)
 {
     TEST_ASSERT_EQUAL(LS_OK,
-                LightScheduler_ScheduleTurnOn(0, MONDAY, 600));
+                      LightScheduler_ScheduleTurnOn(0, MONDAY, 600));
     TEST_ASSERT_EQUAL(LS_OK,
-                LightScheduler_ScheduleTurnOn(15, MONDAY, 600));
+                      LightScheduler_ScheduleTurnOn(15, MONDAY, 600));
     TEST_ASSERT_EQUAL(LS_OK,
-                LightScheduler_ScheduleTurnOn(31, MONDAY, 600));
+                      LightScheduler_ScheduleTurnOn(31, MONDAY, 600));
 }
 
 TEST(LightScheduler, RejectsInvalidLightIds)
 {
     TEST_ASSERT_EQUAL(LS_ID_OUT_OF_BOUNDS,
-                LightScheduler_ScheduleTurnOn(-1, MONDAY, 600));
+                      LightScheduler_ScheduleTurnOn(-1, MONDAY, 600));
     TEST_ASSERT_EQUAL(LS_ID_OUT_OF_BOUNDS,
-                LightScheduler_ScheduleTurnOn(32, MONDAY, 600));
+                      LightScheduler_ScheduleTurnOn(32, MONDAY, 600));
 }
 
 TEST(LightScheduler, RemoveRecyclesEventSlot)
@@ -314,12 +310,12 @@ TEST(LightScheduler, RemoveRecyclesEventSlot)
     int i;
     for (i = 0; i < 128; i++)
         TEST_ASSERT_EQUAL(LS_OK,
-                    LightScheduler_ScheduleTurnOn(6, MONDAY, 600+i));
+                          LightScheduler_ScheduleTurnOn(6, MONDAY, 600 + i));
 
     LightScheduler_ScheduleRemove(6, MONDAY, 600);
 
     TEST_ASSERT_EQUAL(LS_OK,
-                LightScheduler_ScheduleTurnOn(13, MONDAY, 1000));
+                      LightScheduler_ScheduleTurnOn(13, MONDAY, 1000));
 }
 
 TEST(LightScheduler, MultipleScheduledEventsSameTime)
@@ -331,7 +327,7 @@ TEST(LightScheduler, MultipleScheduledEventsSameTime)
     FakeTimeService_SetMinute(500);
 
     LightScheduler_WakeUp();
-    TEST_ASSERT_EQUAL(2, FakeLightController_GetEventCounts());
+    TEST_ASSERT_EQUAL(2, LightControllerSpy_GetEventCounts());
 }
 
 TEST(LightScheduler, MultipleScheduledEventsDifferentTimes)
@@ -419,4 +415,3 @@ TEST(LightScheduler, ScheduleWeekEnd)
     TEST_ASSERT_EQUAL(LIGHT_ID_UNKNOWN, LightControllerSpy_GetLastId());
     TEST_ASSERT_EQUAL(LIGHT_STATE_UNKNOWN, LightControllerSpy_GetLastState());
 }
-

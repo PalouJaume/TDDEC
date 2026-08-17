@@ -27,11 +27,34 @@
       "defines": [
         "${Unity_CFLAGS}"
       ],
-      "cStandard": "c11",
+      "cStandard": "c99",
       "browse": {
         "path": [
           "${workspaceFolder}/code/unity.framework",
           "${workspaceFolder}/SandBox"
+        ]
+      }
+    },
+    {
+      "name": "T0_Unity",
+      "compilerPath": "/usr/bin/clang",
+      "intelliSenseMode": "macos-clang-x64",
+      "includePath": [
+        "${workspaceFolder}/code/unity.framework/src",
+        "${workspaceFolder}/code/unity.framework/extras/fixture/src",
+        "${workspaceFolder}/code/unity.framework/extras/fixture/test",
+        "${workspaceFolder}/code-t0/include/HomeAutomation",
+        "${workspaceFolder}/code-t0/include/util",
+        "${workspaceFolder}/code-t0/mocks"
+      ],
+      "defines": [
+        "${Unity_CFLAGS}"
+      ],
+      "cStandard": "c99",
+      "browse": {
+        "path": [
+          "${workspaceFolder}/code/unity.framework",
+          "${workspaceFolder}/code-t0"
         ]
       }
     }
